@@ -102,9 +102,7 @@
               <url>http://13.232.46.116:8081/repository/walmart-snapshot/</url>
             </snapshotRepository>
 
-        </distributionManagement>
-
-	    
+ 
 	</distributionManagement>
 	
 	<build>

@@ -1,0 +1,31 @@
+node{
+
+echo "The jobName is : ${env.JOB_NAME}"
+echo "The nodename is : ${env.NODE_NAME}"
+echo "The buildNumber is : ${env.BUILD_NUMBER}"
+
+properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * *')])])
+
+def mavenHome = tool name: 'maven 3.9.1'
+
+stage('Checkout')
+{
+git branch: 'development', credentialsId: '9754fc48-aaff-4b6d-90d1-db3b2cbd060b', url: 'https://github.com/Jean2425/maven-web-application.git'
+}	
+
+stage ('Build')
+{
+sh "${mavenHome}/bin/mvn package"
+}
+
+stage ('Upload Nexus')
+{
+sh "${mavenHome}/bin/mvn clean deploy"
+}
+
+stage ('Deploy') {
+sshagent(['69676a42-9163-4c01-94ad-8ecd662d215c']) {
+sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.38.159:/opt/tomcat9/webapps/"
+  } 
+ }
+}

@@ -1,4 +1,4 @@
-node{
+node{'walmart-slave'}
 
 echo "The jobName is : ${env.JOB_NAME}"
 echo "The nodename is : ${env.NODE_NAME}"
@@ -7,6 +7,11 @@ echo "The buildNumber is : ${env.BUILD_NUMBER}"
 properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '3')), pipelineTriggers([pollSCM('* * * * *')])])
 
 def mavenHome = tool name: 'maven 3.9.1'
+
+stage ('git')
+{
+sh "sudo yum install git -y"
+}
 
 stage('Checkout')
 {

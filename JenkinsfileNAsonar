@@ -1,4 +1,4 @@
-node{'walmart-slave'}
+node('walmart-slave'){
 
 echo "The jobName is : ${env.JOB_NAME}"
 echo "The nodename is : ${env.NODE_NAME}"
@@ -33,4 +33,5 @@ sshagent(['69676a42-9163-4c01-94ad-8ecd662d215c']) {
 sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.38.159:/opt/tomcat9/webapps/"
   } 
  }
+}
 }
